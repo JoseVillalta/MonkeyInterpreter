@@ -9,6 +9,13 @@ class Token
   # Operators
   ASSIGN = '='
   PLUS = '+'
+  MINUS = '-'
+  BANG = '!'
+  ASTERISK = '*'
+  SLASH = '/'
+
+  LT = '<'
+  GT = '>'
 
   # Delimiters
   COMMA = ','
@@ -22,6 +29,11 @@ class Token
   # Keywords
   FUNCTION = 'FUNCTION'
   LET = 'LET'
+  IF = 'IF'
+  ELSE = 'ELSE'
+  TRUE = 'TRUE'
+  FALSE = 'FALSE'
+  RETURN = 'RETURN'
 
   attr_accessor :token_type
   attr_accessor :literal
@@ -29,7 +41,14 @@ class Token
   def initialize(token_type, literal)
     @token_type = token_type
     @literal = literal
-    @keykord_map = { 'fun' => "FUNCTION", 'let' => "LET"}
+    @keykord_map = { 'fun' => "FUNCTION",
+                     'let' => "LET",
+                     'if' => 'IF',
+                     'else' => 'ELSE',
+                     'true' => 'TRUE',
+                     'false' => 'FALSE',
+                     'return' => 'RETURN'
+    }
   end
 
   def lookup_ident(identifier)

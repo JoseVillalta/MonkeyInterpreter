@@ -24,7 +24,13 @@ class Lexer
     skip_whitespace
     case @ch
     when '='
-      tok = Token.new('ASSIGN','=')
+      if peek_char == '='
+        ch = @ch
+        read_char
+        tok = Token.new('EQ', ch + @ch)
+      else
+        tok = Token.new('ASSIGN','=')
+      end
     when ';'
       tok = Token.new('SEMICOLON', ';')
     when '('
@@ -39,6 +45,24 @@ class Lexer
       tok = Token.new('COMMA', ',')
     when '+'
       tok = Token.new('PLUS', '+')
+    when '!'
+      if peek_char == '='
+        ch = @ch
+        read_char
+        tok = Token.new('NOT_EQ', ch + @ch)
+      else
+        tok = Token.new('BANG', '!')
+      end
+    when '-'
+      tok = Token.new('MINUS', '-')
+    when '*'
+      tok = Token.new('ASTERISK', '*')
+    when '/'
+      tok = Token.new('SLASH', '/')
+    when '<'
+      tok = Token.new('LT', '<')
+    when '>'
+      tok = Token.new('GT', '>')
     when 0
       tok = Token.new('EOF', "")
     else
@@ -90,6 +114,14 @@ class Lexer
     end
     while(@ch.match(/\s/))
       read_char
+    end
+  end
+
+  def peek_char
+    if @read_position >= input.length
+      return 0
+    else
+      return input[@read_position]
     end
   end
 

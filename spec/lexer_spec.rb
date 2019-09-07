@@ -32,7 +32,15 @@ describe 'Lexer' do
      x + y;
     };
 
-    let result = add(five, ten);'
+    let result = add(five, ten);
+    !-/*5;
+    5 < 10 > 5;
+
+    if (5 < 10) {
+      return true;
+    } else {
+      return false;
+    }'
     tests = [
         Token.new('LET', 'let'),
         Token.new('IDENT', 'five'),
@@ -70,9 +78,66 @@ describe 'Lexer' do
         Token.new('IDENT', 'ten'),
         Token.new('RPAREN', ')'),
         Token.new('SEMICOLON', ';'),
-        Token.new('EOF', "")
+        Token.new('BANG', '!'),
+        Token.new('MINUS', '-'),
+        Token.new('SLASH', '/'),
+        Token.new('ASTERISK', '*'),
+        Token.new('INT', '5'),
+        Token.new('SEMICOLON', ';'),
+        Token.new('INT', '5'),
+        Token.new('LT', '<'),
+        Token.new('INT', '10'),
+        Token.new('GT', '>'),
+        Token.new('INT', '5'),
+        Token.new('SEMICOLON', ';'),
+        Token.new('IF', 'if'),
+        Token.new('LPAREN', '('),
+        Token.new('INT', '5'),
+        Token.new('LT', '<'),
+        Token.new('INT', '10'),
+        Token.new('RPAREN', ')'),
+        Token.new('LBRACE', '{'),
+        Token.new('RETURN', 'return'),
+        Token.new('TRUE', 'true'),
+        Token.new('SEMICOLON', ';'),
+        Token.new('RBRACE', '}'),
+        Token.new('ELSE', 'else'),
+        Token.new('LBRACE', '{'),
+        Token.new('RETURN', 'return'),
+        Token.new('FALSE', 'false'),
+        Token.new('SEMICOLON', ';'),
+        Token.new('RBRACE', '}'),
+        Token.new('EOF', ""),
+
     ]
 
+    l = Lexer.new(input)
+    tests.each do |expected_token|
+      tok = l.next_token
+      expect(tok.token_type).to eq(expected_token.token_type)
+      expect(tok.literal).to eq(expected_token.literal)
+    end
+  end
+
+  it 'returns tokens with two characters' do
+    input = 'if(var == 5);
+             if(foo != 10);'
+    tests = [
+        Token.new('IF', 'if'),
+        Token.new('LPAREN', '('),
+        Token.new('IDENT', 'var'),
+        Token.new('EQ', '=='),
+        Token.new('INT', '5'),
+        Token.new('RPAREN', ')'),
+        Token.new('SEMICOLON', ';'),
+        Token.new('IF', 'if'),
+        Token.new('LPAREN', '('),
+        Token.new('IDENT', 'foo'),
+        Token.new('NOT_EQ', '!='),
+        Token.new('INT', '10'),
+        Token.new('RPAREN', ')'),
+        Token.new('SEMICOLON', ';')
+    ]
     l = Lexer.new(input)
     tests.each do |expected_token|
       tok = l.next_token
