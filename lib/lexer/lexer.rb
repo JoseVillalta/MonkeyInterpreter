@@ -27,7 +27,7 @@ class Lexer
       if peek_char == '='
         ch = @ch
         read_char
-        tok = Token.new('EQ', ch + @ch)
+        tok = Token.new('EQ', '==')
       else
         tok = Token.new('ASSIGN','=')
       end
@@ -85,7 +85,11 @@ class Lexer
   end
 
   def is_letter
-    return ('a' <= @ch && @ch <= 'z' )|| ('A' <= @ch && @ch <= 'Z') || @ch == '_'
+    if @ch == 0
+      return
+    else
+     return ('a' <= @ch && @ch <= 'z' )|| ('A' <= @ch && @ch <= 'Z') || @ch == '_'
+    end
   end
 
   def read_identifier
@@ -97,7 +101,11 @@ class Lexer
   end
 
   def is_digit
-   return '0' <= @ch && @ch <= '9'
+    if @ch == 0
+      return
+    else
+      return '0' <= @ch && @ch <= '9'
+    end
   end
 
   def read_number
@@ -111,9 +119,10 @@ class Lexer
   def skip_whitespace
     if @ch == 0
       return
-    end
+    else
     while(@ch.match(/\s/))
       read_char
+    end
     end
   end
 
